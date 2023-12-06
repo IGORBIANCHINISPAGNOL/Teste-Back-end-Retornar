@@ -13,12 +13,12 @@ namespace Services.Generators
     {
         public readonly IGeneratorRepository _generatorRepository;
         public GeneratorService(IGeneratorRepository generatorRepository) => _generatorRepository = generatorRepository;
-     
+
         public async Task<OperationResult<Cliente>> RegisterNewKey(Cliente cliente)
         {
             try
             {
-                cliente = await _generatorRepository.GetPostClient(cliente);                                        
+                cliente = await _generatorRepository.GetPostClient(cliente);
                 cliente.xNumeroGerado = GenerateNewKey(await _generatorRepository.GetAllNumbers());
                 SaveTxt(cliente);
                 return new OperationResult<Cliente>(_generatorRepository.PostNewKey(cliente))
@@ -29,10 +29,11 @@ namespace Services.Generators
             catch (Exception ex)
             {
                 return new OperationResult<Cliente>(false, ex.Message);
-            }            
+            }
         }
-        private async void SaveTxt(Cliente cliente) => await System.IO.File.AppendAllTextAsync($"C:\\Generator\\{cliente.xEmail.ToUpper()}.txt", $"{cliente.xNumeroGerado.ToString()}\r");           
+        private async void SaveTxt(Cliente cliente) => await System.IO.File.AppendAllTextAsync($"{System.Environment.CurrentDirectory.ToString()}\\{cliente.xEmail.ToUpper()}.txt", $"{cliente.xNumeroGerado.ToString()}\r"); 
         
+
         private int GenerateNewKey(List<int> _lNumerosGerados)
         {
             int _result = 0;
