@@ -42,7 +42,7 @@ namespace Services.Generators
             while (true)
             {
                 count++;
-                _result = randNum.Next(1, 99999);
+                _result = randNum.Next(0, 99999);
                 if (_lNumerosGerados.Where(x => x == _result).FirstOrDefault() == 0)
                     return _result;
 
